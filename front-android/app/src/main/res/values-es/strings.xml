@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Bienvenido a OdysseyPass</string>
     <string name="label_name">Nombre</string>
@@ -5,5 +6,4 @@
     <string name="label_mail">Email</string>
     <string name="label_telf">Telefono</string>
     <string name="entrar">Entrar</string>
-
 </resources>
