@@ -35,7 +35,7 @@ public class PasajeroController {
 	public ResponseEntity<Pasajero> savePasajero(@RequestBody Pasajero pasajero,UriComponentsBuilder ucb) {
 
 	    Pasajero savedPasajero = ps.savePsajero(pasajero);
-	    URI location = ucb.path("/pasajeros/{id}")
+	    URI location = ucb.path("/pasajero/{id}")
 	                      .buildAndExpand(savedPasajero.getId())  
 	                      .toUri();
 	    
