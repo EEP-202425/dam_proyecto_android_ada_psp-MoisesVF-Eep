@@ -1,7 +1,8 @@
 package com.proyecto.proyecto.controllers;
 
 import java.net.URI;
-import java.util.ArrayList;
+
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,30 +28,25 @@ public class PasajeroController {
 	private PasajeroService ps;
 
 	@GetMapping
-	public ArrayList<Pasajero> getPasajeros() {
-		return this.ps.getPasajeros();
+	public ResponseEntity<List<Pasajero>> getPasajeros() {
+		return ResponseEntity.ok(ps.getPasajeros());
 	}
 
 	@PostMapping
-	public ResponseEntity<Pasajero> savePasajero(@RequestBody Pasajero pasajero,UriComponentsBuilder ucb) {
+	public ResponseEntity<Pasajero> savePasajero(@RequestBody Pasajero pasajero, UriComponentsBuilder ucb) {
 
-	    Pasajero savedPasajero = ps.savePsajero(pasajero);
-	    URI location = ucb.path("/pasajero/{id}")
-	                      .buildAndExpand(savedPasajero.getId())  
-	                      .toUri();
-	    
-	    return ResponseEntity
-	            .created(location)           
-	            .body(savedPasajero);       
+		Pasajero savedPasajero = ps.savePsajero(pasajero);
+		URI location = ucb.path("/pasajero/{id}").buildAndExpand(savedPasajero.getId()).toUri();
+
+		return ResponseEntity.created(location).body(savedPasajero);
 	}
-
 
 	@GetMapping(path = "/{id}")
 	public ResponseEntity<Pasajero> getPasajeroById(@PathVariable Long id) {
-		Optional<Pasajero>pasajeroOpt = ps.getById(id);
-		if(pasajeroOpt.isPresent()) {
+		Optional<Pasajero> pasajeroOpt = ps.getById(id);
+		if (pasajeroOpt.isPresent()) {
 			return ResponseEntity.ok(pasajeroOpt.get());
-		}else {
+		} else {
 			return ResponseEntity.notFound().build();
 		}
 	}
