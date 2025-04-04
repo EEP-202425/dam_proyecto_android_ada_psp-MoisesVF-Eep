@@ -16,6 +16,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
@@ -85,48 +87,76 @@ fun cuerpoPagina(modifier: Modifier = Modifier) {
                 modifier = Modifier.padding(bottom = 105.dp), color = Color.White, textDecoration = TextDecoration.Underline)
 
             Column(verticalArrangement = Arrangement.spacedBy(25.dp),horizontalAlignment = Alignment.CenterHorizontally) {
-                cuadroNombre(modifier = Modifier.fillMaxWidth())
-                cuadroApellido(modifier = Modifier.fillMaxWidth())
-                cuadroEmail(modifier = Modifier.fillMaxWidth())
-                cuadroTelf(modifier = Modifier.fillMaxWidth())
-                inicio(modifier = Modifier.fillMaxWidth().align(Alignment.CenterHorizontally))
+                var name =  cuadroNombre(modifier = Modifier.fillMaxWidth())
+                var sur = cuadroApellido(modifier = Modifier.fillMaxWidth())
+                var mail = cuadroEmail(modifier = Modifier.fillMaxWidth())
+                var tel = cuadroTelf(modifier = Modifier.fillMaxWidth())
+                var completado :Boolean = false
+                if(name && sur && mail && tel){
+                    completado = true
+
+                }
+                inicio(modifier = Modifier.fillMaxWidth().align(Alignment.CenterHorizontally),completado)
+
             }
         }
     }
 }
 
 @Composable
-fun cuadroNombre(modifier: Modifier){
+fun cuadroNombre(modifier: Modifier): Boolean {
     var nombre:String by rememberSaveable { mutableStateOf("") }
-    TextField(nombre, onValueChange = {nombre = it}, maxLines = 1,label = { Text(stringResource(id= R.string.label_name)) },modifier=Modifier.alpha(0.8f))
+
+   TextField(nombre, onValueChange = {nombre = it}, maxLines = 1,label = { Text(stringResource(id= R.string.label_name)) },modifier=Modifier.alpha(0.8f), shape = RoundedCornerShape(10.dp))
+    if(nombre.isNotEmpty()){
+        return true
+    }else{
+        return false;
+    }
+
 }
 
 @Composable
-fun cuadroApellido(modifier: Modifier){
+fun cuadroApellido(modifier: Modifier): Boolean {
     var ape:String by rememberSaveable { mutableStateOf("") }
-    TextField(ape, onValueChange = {ape = it}, maxLines = 1,label = { Text(stringResource(id= R.string.label_Ape)) },modifier=Modifier.alpha(0.8f))
+    TextField(ape, onValueChange = {ape = it}, maxLines = 1,label = { Text(stringResource(id= R.string.label_Ape)) },modifier=Modifier.alpha(0.8f), shape = RoundedCornerShape(10.dp))
+    if(ape.isNotEmpty()){
+        return true
+    }else{
+        return false;
+    }
 }
 
 @Composable
-fun cuadroEmail(modifier: Modifier){
+fun cuadroEmail(modifier: Modifier): Boolean {
     var mail:String by rememberSaveable { mutableStateOf("") }
-    TextField(mail, onValueChange = {mail = it}, maxLines = 1,label = { Text(stringResource(id= R.string.label_mail))},modifier=Modifier.alpha(0.8f))
+    TextField(mail, onValueChange = {mail = it}, maxLines = 1,label = { Text(stringResource(id= R.string.label_mail))},modifier=Modifier.alpha(0.8f), shape = RoundedCornerShape(10.dp))
+    if(mail.isNotEmpty()){
+        return true
+    }else{
+        return false;
+    }
 }
 
 @Composable
-fun cuadroTelf(modifier: Modifier){
+fun cuadroTelf(modifier: Modifier): Boolean {
     var tel:String by rememberSaveable{ mutableStateOf("")}
     TextField(tel, onValueChange = {numero ->
         if(numero.length <= 9){
              tel=numero }
         }
         , maxLines = 1,label = { Text(stringResource(id= R.string.label_telf)) },
-        keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),modifier=Modifier.alpha(0.8f))
+        keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),modifier=Modifier.alpha(0.8f), shape = RoundedCornerShape(10.dp))
+    if(tel.isNotEmpty()){
+        return true
+    }else{
+        return false;
+    }
 }
 
 @Composable
-fun inicio(modifier: Modifier){
-    Button(onClick = {}, colors = ButtonDefaults.buttonColors(IndianRed) ) {
+fun inicio(modifier: Modifier,completado:Boolean){
+    Button(onClick = {}, colors = ButtonDefaults.buttonColors(IndianRed), enabled = completado, shape = RoundedCornerShape(10.dp) ) {
         Text(stringResource(id=R.string.entrar), fontWeight = FontWeight.Bold)
     }
 }
