@@ -15,13 +15,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -88,15 +84,15 @@ fun cuerpoPagina(modifier: Modifier = Modifier) {
 
             Column(verticalArrangement = Arrangement.spacedBy(25.dp),horizontalAlignment = Alignment.CenterHorizontally) {
                 var name =  cuadroNombre(modifier = Modifier.fillMaxWidth())
-                var sur = cuadroApellido(modifier = Modifier.fillMaxWidth())
+                var surNa = cuadroApellido(modifier = Modifier.fillMaxWidth())
                 var mail = cuadroEmail(modifier = Modifier.fillMaxWidth())
                 var tel = cuadroTelf(modifier = Modifier.fillMaxWidth())
                 var completado :Boolean = false
-                if(name && sur && mail && tel){
-                    completado = true
+                if(name.length > 0 && surNa.length > 0 && mail.length > 0 && tel.length > 0){
+                  completado = true
 
                 }
-                inicio(modifier = Modifier.fillMaxWidth().align(Alignment.CenterHorizontally),completado)
+                inicio(modifier = Modifier.fillMaxWidth().align(Alignment.CenterHorizontally),completado,name,surNa,mail,tel)
 
             }
         }
@@ -104,42 +100,31 @@ fun cuerpoPagina(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun cuadroNombre(modifier: Modifier): Boolean {
+fun cuadroNombre(modifier: Modifier): String {
     var nombre:String by rememberSaveable { mutableStateOf("") }
 
    TextField(nombre, onValueChange = {nombre = it}, maxLines = 1,label = { Text(stringResource(id= R.string.label_name)) },modifier=Modifier.alpha(0.8f), shape = RoundedCornerShape(10.dp))
-    if(nombre.isNotEmpty()){
-        return true
-    }else{
-        return false;
-    }
+    return nombre ;
 
 }
 
 @Composable
-fun cuadroApellido(modifier: Modifier): Boolean {
+fun cuadroApellido(modifier: Modifier): String {
     var ape:String by rememberSaveable { mutableStateOf("") }
     TextField(ape, onValueChange = {ape = it}, maxLines = 1,label = { Text(stringResource(id= R.string.label_Ape)) },modifier=Modifier.alpha(0.8f), shape = RoundedCornerShape(10.dp))
-    if(ape.isNotEmpty()){
-        return true
-    }else{
-        return false;
-    }
+    return ape;
 }
 
 @Composable
-fun cuadroEmail(modifier: Modifier): Boolean {
+fun cuadroEmail(modifier: Modifier): String {
     var mail:String by rememberSaveable { mutableStateOf("") }
     TextField(mail, onValueChange = {mail = it}, maxLines = 1,label = { Text(stringResource(id= R.string.label_mail))},modifier=Modifier.alpha(0.8f), shape = RoundedCornerShape(10.dp))
-    if(mail.isNotEmpty()){
-        return true
-    }else{
-        return false;
-    }
+        return mail;
+
 }
 
 @Composable
-fun cuadroTelf(modifier: Modifier): Boolean {
+fun cuadroTelf(modifier: Modifier): String {
     var tel:String by rememberSaveable{ mutableStateOf("")}
     TextField(tel, onValueChange = {numero ->
         if(numero.length <= 9){
@@ -147,15 +132,20 @@ fun cuadroTelf(modifier: Modifier): Boolean {
         }
         , maxLines = 1,label = { Text(stringResource(id= R.string.label_telf)) },
         keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),modifier=Modifier.alpha(0.8f), shape = RoundedCornerShape(10.dp))
-    if(tel.isNotEmpty()){
-        return true
-    }else{
-        return false;
-    }
+
+        return tel;
+
 }
 
 @Composable
-fun inicio(modifier: Modifier,completado:Boolean){
+fun inicio(
+    modifier: Modifier,
+    completado: Boolean,
+    name: String,
+    surNa: String,
+    mail: String,
+    tel: String
+){
     Button(onClick = {}, colors = ButtonDefaults.buttonColors(IndianRed), enabled = completado, shape = RoundedCornerShape(10.dp) ) {
         Text(stringResource(id=R.string.entrar), fontWeight = FontWeight.Bold)
     }
