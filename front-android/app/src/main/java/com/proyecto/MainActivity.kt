@@ -41,6 +41,8 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+
+import com.proyecto.Screens.cuerpoPagina
 import com.proyecto.ui.theme.IndianRed
 import com.proyecto.ui.theme.ProyectoTheme
 import com.proyecto.ui.theme.RojoFondo
@@ -53,100 +55,10 @@ class MainActivity : ComponentActivity() {
             ProyectoTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     cuerpoPagina(Modifier.padding(innerPadding))
+
+
                 }
             }
         }
-    }
-}
-
-@Composable
-fun cuerpoPagina(modifier: Modifier = Modifier) {
-
-    Box(
-        modifier = Modifier.fillMaxSize().background(RojoFondo)
-    ) {
-        Image(
-            painter = painterResource(id = R.drawable.img_0928),
-            contentDescription = "Fondo",
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .fillMaxSize()
-                .alpha(0.5f) // Ajusta la opacidad
-        )
-
-        Column(Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center,Alignment.CenterHorizontally) {
-            val deliusFont = FontFamily(
-                Font(R.font.delius_regular)
-            )
-            Text(text = stringResource(id =R.string.app_name), fontWeight = FontWeight.ExtraBold, fontSize = 32.sp,maxLines = 1,
-                fontFamily = deliusFont,
-                modifier = Modifier.padding(bottom = 105.dp), color = Color.White, textDecoration = TextDecoration.Underline)
-
-            Column(verticalArrangement = Arrangement.spacedBy(25.dp),horizontalAlignment = Alignment.CenterHorizontally) {
-                var name =  cuadroNombre(modifier = Modifier.fillMaxWidth())
-                var surNa = cuadroApellido(modifier = Modifier.fillMaxWidth())
-                var mail = cuadroEmail(modifier = Modifier.fillMaxWidth())
-                var tel = cuadroTelf(modifier = Modifier.fillMaxWidth())
-                var completado :Boolean = false
-                if(name.length > 0 && surNa.length > 0 && mail.length > 0 && tel.length > 0){
-                  completado = true
-
-                }
-                inicio(modifier = Modifier.fillMaxWidth().align(Alignment.CenterHorizontally),completado,name,surNa,mail,tel)
-
-            }
-        }
-    }
-}
-
-@Composable
-fun cuadroNombre(modifier: Modifier): String {
-    var nombre:String by rememberSaveable { mutableStateOf("") }
-
-   TextField(nombre, onValueChange = {nombre = it}, maxLines = 1,label = { Text(stringResource(id= R.string.label_name)) },modifier=Modifier.alpha(0.8f), shape = RoundedCornerShape(10.dp))
-    return nombre ;
-
-}
-
-@Composable
-fun cuadroApellido(modifier: Modifier): String {
-    var ape:String by rememberSaveable { mutableStateOf("") }
-    TextField(ape, onValueChange = {ape = it}, maxLines = 1,label = { Text(stringResource(id= R.string.label_Ape)) },modifier=Modifier.alpha(0.8f), shape = RoundedCornerShape(10.dp))
-    return ape;
-}
-
-@Composable
-fun cuadroEmail(modifier: Modifier): String {
-    var mail:String by rememberSaveable { mutableStateOf("") }
-    TextField(mail, onValueChange = {mail = it}, maxLines = 1,label = { Text(stringResource(id= R.string.label_mail))},modifier=Modifier.alpha(0.8f), shape = RoundedCornerShape(10.dp))
-        return mail;
-
-}
-
-@Composable
-fun cuadroTelf(modifier: Modifier): String {
-    var tel:String by rememberSaveable{ mutableStateOf("")}
-    TextField(tel, onValueChange = {numero ->
-        if(numero.length <= 9){
-             tel=numero }
-        }
-        , maxLines = 1,label = { Text(stringResource(id= R.string.label_telf)) },
-        keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),modifier=Modifier.alpha(0.8f), shape = RoundedCornerShape(10.dp))
-
-        return tel;
-
-}
-
-@Composable
-fun inicio(
-    modifier: Modifier,
-    completado: Boolean,
-    name: String,
-    surNa: String,
-    mail: String,
-    tel: String
-){
-    Button(onClick = {}, colors = ButtonDefaults.buttonColors(IndianRed), enabled = completado, shape = RoundedCornerShape(10.dp) ) {
-        Text(stringResource(id=R.string.entrar), fontWeight = FontWeight.Bold)
     }
 }
