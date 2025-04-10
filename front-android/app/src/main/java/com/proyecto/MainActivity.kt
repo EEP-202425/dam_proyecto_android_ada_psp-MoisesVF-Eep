@@ -1,5 +1,6 @@
 package com.proyecto
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -41,13 +42,20 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.lifecycleScope
+import com.proyecto.Api.ApiService
+import com.proyecto.Api.URLBASE
 
 import com.proyecto.Screens.cuerpoPagina
 import com.proyecto.ui.theme.IndianRed
 import com.proyecto.ui.theme.ProyectoTheme
 import com.proyecto.ui.theme.RojoFondo
+import kotlinx.coroutines.launch
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 class MainActivity : ComponentActivity() {
+    @SuppressLint("CoroutineCreationDuringComposition")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -55,6 +63,20 @@ class MainActivity : ComponentActivity() {
             ProyectoTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     cuerpoPagina(Modifier.padding(innerPadding))
+
+                    val retrofit = Retrofit.Builder()
+                        .baseUrl(URLBASE)
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .build()
+
+
+                    val service = retrofit.create(ApiService::class.java)
+                    lifecycleScope.launch {
+                        val response = service.getRuta()
+                        response.forEach {
+                            println(it)
+                        }
+                    }
 
 
                 }
