@@ -8,4 +8,6 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="RojoFondo">#FFd22a2a</color>
+    <color name="BlancoFondo">#FFF9F4EC</color>
+
 </resources>

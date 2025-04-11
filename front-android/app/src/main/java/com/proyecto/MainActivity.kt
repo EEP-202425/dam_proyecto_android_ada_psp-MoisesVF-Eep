@@ -16,8 +16,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
 
 import com.proyecto.Api.RutasViewModel
-
 import com.proyecto.Screens.cuerpoPagina
+
 import com.proyecto.Screens.menuInicio
 
 import com.proyecto.ui.theme.ProyectoTheme
@@ -29,6 +29,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         rutasViewModel.obtenerRutas()
+
         enableEdgeToEdge()
         setContent {
             ProyectoTheme {

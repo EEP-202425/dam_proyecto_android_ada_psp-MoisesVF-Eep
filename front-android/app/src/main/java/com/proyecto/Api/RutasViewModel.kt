@@ -43,4 +43,30 @@ class RutasViewModel: ViewModel() {
             }
         }
     }
+
+    val ciudad = mutableStateOf<List<Rutas>>(emptyList())
+
+
+
+    fun buscarOrigen(lugar: String): List<Rutas> {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val resultado = RutasApi.retrofitService.getRutaByCiudad(lugar)
+
+                ciudad.value = resultado
+
+            } catch (e: IOException) {
+
+                ciudad.value = emptyList()
+            } catch (e: HttpException) {
+
+                ciudad.value = emptyList()
+            } catch (e: Exception) {
+
+                ciudad.value = emptyList()
+            }
+        }
+        return ciudad.value
+    }
+
 }

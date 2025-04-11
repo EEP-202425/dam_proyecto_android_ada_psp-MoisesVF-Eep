@@ -27,8 +27,8 @@ interface ApiService {
 @GET("ruta")
 suspend fun getRuta(): List<Rutas>
 
-@GET("ruta/{id}")
-suspend fun getRutaById(@Path("id")id: String): Rutas
+@GET("ruta/{Origen}")
+suspend fun getRutaByCiudad(@Path("Origen")id: String): List<Rutas>
 
 }
 
