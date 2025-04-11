@@ -1,20 +1,12 @@
 package com.proyecto.Clases
 
+import kotlinx.serialization.Serializable
 
-import com.google.gson.annotations.SerializedName
-import kotlinx.coroutines.launch
-
+@Serializable
 data class Rutas(
-    @SerializedName("id")
     val id:Long,
-
-    @SerializedName("origen")
-    val  Origen: Ciudades,
-
-    @SerializedName("llegada")
-    val Destino: Ciudades,
-
-    @SerializedName("trenes")
+    val origen: Ciudades,
+    val llegada: Ciudades,
     val trenes: List<Tren> = listOf()
     )
 

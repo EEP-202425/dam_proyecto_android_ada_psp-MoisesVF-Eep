@@ -1,8 +1,9 @@
 package com.proyecto.Clases
 
 import androidx.compose.runtime.Composable
+import kotlinx.serialization.Serializable
 
-
+@Serializable
 data class Pasajero (
 
 
