@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.proyecto.proyecto.services.PasajeroService;
+import com.proyecto.proyecto.tablas.Billete;
 import com.proyecto.proyecto.tablas.Pasajero;
 
 @RestController
@@ -61,6 +62,11 @@ public class PasajeroController {
 		return this.ps.deletePasajero(id) ? "Pasajero con id:" + id + " Borrado"
 				: "Pasajero con id:" + id + " No se borro";
 
+	}
+	
+	@GetMapping(path = "/billetes/{id}")
+	public ResponseEntity <List<Billete>> findBilletes(@PathVariable Long id){
+		return ResponseEntity.ok(ps.obtenerBilletesPorPasajero(id));
 	}
 
 }

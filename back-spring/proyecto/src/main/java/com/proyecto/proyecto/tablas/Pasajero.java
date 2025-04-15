@@ -1,10 +1,15 @@
 package com.proyecto.proyecto.tablas;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -37,6 +42,9 @@ public class Pasajero {
 
 	@Column(nullable = false)
 	private String telefono;
+
+	@OneToMany(mappedBy = "pasajero", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Billete> billetes = new ArrayList<>();
 
 	public Long getId() {
 		return id;
@@ -76,6 +84,24 @@ public class Pasajero {
 
 	public void setTelefono(String telefono) {
 		this.telefono = telefono;
+	}
+
+	public List<Billete> getBilletes() {
+		return billetes;
+	}
+
+	public void setBilletes(List<Billete> billetes) {
+		this.billetes = billetes;
+	}
+
+	public void addBillete(Billete billete) {
+		billetes.add(billete);
+		billete.setPasajero(this);
+	}
+
+	public void removeBillete(Billete billete) {
+		billetes.remove(billete);
+		billete.setPasajero(null);
 	}
 
 }
