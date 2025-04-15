@@ -63,10 +63,5 @@ public class PasajeroController {
 				: "Pasajero con id:" + id + " No se borro";
 
 	}
-	
-	@GetMapping(path = "/billetes/{id}")
-	public ResponseEntity <List<Billete>> findBilletes(@PathVariable Long id){
-		return ResponseEntity.ok(ps.obtenerBilletesPorPasajero(id));
-	}
 
 }

@@ -10,6 +10,6 @@ import com.proyecto.proyecto.tablas.Pasajero;
 
 @Repository
 public interface IPasajeroRepository extends CrudRepository<Pasajero, Long> {
-		List<Billete> findBilletes(Long id);
+		
 		
 }

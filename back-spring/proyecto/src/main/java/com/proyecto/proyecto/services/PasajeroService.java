@@ -49,9 +49,5 @@ public class PasajeroService {
 		}
 
 	}
-	
-	 public List<Billete> obtenerBilletesPorPasajero(Long id) {
-	        return pasajeroRepository.findBilletes(id);
-	    }
 
 }

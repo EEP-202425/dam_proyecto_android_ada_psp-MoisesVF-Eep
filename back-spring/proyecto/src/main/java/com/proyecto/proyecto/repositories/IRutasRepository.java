@@ -10,7 +10,7 @@ import com.proyecto.proyecto.tablas.Destinos;
 import com.proyecto.proyecto.tablas.Rutas;
 
 @Repository
-public interface IRutasRepository extends CrudRepository<Rutas, Long>{
+public interface IRutasRepository extends CrudRepository<Rutas, Long> {
 
 	List<Rutas> findByOrigen(Destinos origen);
 

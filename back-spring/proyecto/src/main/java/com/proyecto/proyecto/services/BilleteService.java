@@ -11,12 +11,11 @@ import com.proyecto.proyecto.tablas.Pasajero;
 
 @Service
 public class BilleteService {
-	
+
 	@Autowired
-    private IBilleteRepository billeteRepository;
+	private IBilleteRepository billeteRepository;
 
-    public List<Billete> obtenerBilletesPorPasajero(Pasajero pasajero) {
-        return billeteRepository.findByPasajero(pasajero);
-    }
-
+	public List<Billete> obtenerBilletesPorPasajero(Long pasajeroId) {
+		return billeteRepository.findAllByPasajeroId(pasajeroId);
+	}
 }
