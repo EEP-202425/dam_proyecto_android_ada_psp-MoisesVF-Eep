@@ -153,7 +153,7 @@ fun buscadorFinal(routes: List<Rutas>) {
         }
     }else{
 
-            // Si la lista está vacía, mostrar un mensaje
+
             Text(
                 text = "No se encontraron rutas.",
                 modifier = Modifier.padding(16.dp),

@@ -34,7 +34,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             ProyectoTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    //cuerpoPagina(Modifier.padding(innerPadding))
+                    //cuerpoPagina(Modifier.padding(innerPadding),rutasViewModel = rutasViewModel)
                     menuInicio(Modifier.padding(innerPadding),rutasViewModel = rutasViewModel)
 
 

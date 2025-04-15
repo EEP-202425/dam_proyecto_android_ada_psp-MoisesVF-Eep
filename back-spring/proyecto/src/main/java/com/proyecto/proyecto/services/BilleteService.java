@@ -18,4 +18,18 @@ public class BilleteService {
 	public List<Billete> obtenerBilletesPorPasajero(Long pasajeroId) {
 		return billeteRepository.findAllByPasajeroId(pasajeroId);
 	}
+	
+	public Billete saveBillete(Billete billete) {
+		return billeteRepository.save(billete);
+	}
+	
+	public Boolean deleteBillete(Long id) {
+		try {
+			billeteRepository.deleteById(id);
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+
+	}
 }

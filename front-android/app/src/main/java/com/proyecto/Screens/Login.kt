@@ -17,6 +17,7 @@ import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -33,13 +34,19 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.proyecto.Api.RutasViewModel
 import com.proyecto.Clases.Pasajero
 import com.proyecto.R
 import com.proyecto.ui.theme.IndianRed
 import com.proyecto.ui.theme.RojoFondo
 
 @Composable
-fun cuerpoPagina(modifier: Modifier = Modifier) {
+fun cuerpoPagina(modifier: Modifier = Modifier,rutasViewModel: RutasViewModel) {
+
+    var name by remember { mutableStateOf("") }
+    var surNa by remember { mutableStateOf("") }
+    var mail by remember { mutableStateOf("") }
+    var tel by remember { mutableStateOf("") }
 
     Box(
         modifier = Modifier.fillMaxSize().background(RojoFondo)
@@ -62,16 +69,19 @@ fun cuerpoPagina(modifier: Modifier = Modifier) {
                 modifier = Modifier.padding(bottom = 105.dp), color = Color.White, textDecoration = TextDecoration.Underline)
 
             Column(verticalArrangement = Arrangement.spacedBy(25.dp),horizontalAlignment = Alignment.CenterHorizontally) {
-                var name =  cuadroNombre(modifier = Modifier.fillMaxWidth())
-                var surNa = cuadroApellido(modifier = Modifier.fillMaxWidth())
-                var mail = cuadroEmail(modifier = Modifier.fillMaxWidth())
-                var tel = cuadroTelf(modifier = Modifier.fillMaxWidth())
+                 name =  cuadroNombre(modifier = Modifier.fillMaxWidth())
+                 surNa = cuadroApellido(modifier = Modifier.fillMaxWidth())
+                 mail = cuadroEmail(modifier = Modifier.fillMaxWidth())
+                 tel = cuadroTelf(modifier = Modifier.fillMaxWidth())
                 var completado :Boolean = false
                 if(name.length > 0 && surNa.length > 0 && mail.length > 0 && tel.length > 0){
                     completado = true
 
                 }
-                val usuario: Pasajero = inicio(modifier = Modifier.fillMaxWidth().align(Alignment.CenterHorizontally),completado,name,surNa,mail,tel)
+
+                inicio(modifier = Modifier.fillMaxWidth().align(Alignment.CenterHorizontally),completado,name,surNa,mail,tel,rutasViewModel)
+
+
 
             }
         }
@@ -117,6 +127,7 @@ fun cuadroTelf(modifier: Modifier): String {
 
 }
 
+
 @Composable
 fun inicio(
     modifier: Modifier,
@@ -124,11 +135,24 @@ fun inicio(
     name: String,
     surNa: String,
     mail: String,
-    tel: String
-): Pasajero {
-    Button(onClick = {}, colors = ButtonDefaults.buttonColors(IndianRed), enabled = completado, shape = RoundedCornerShape(10.dp) ) {
-        Text(stringResource(id= R.string.entrar), fontWeight = FontWeight.Bold)
+    tel: String,
+    rutasViewModel: RutasViewModel
+) {
+
+    Button(
+        onClick = {
+
+            if (completado) {
+                val usuario = Pasajero(name, surNa, mail, tel)
+                rutasViewModel.guardarPasajero(usuario)
+            }
+        },
+        colors = ButtonDefaults.buttonColors(IndianRed),
+        enabled = completado,
+        shape = RoundedCornerShape(10.dp)
+    ) {
+        Text(stringResource(id = R.string.entrar), fontWeight = FontWeight.Bold)
     }
-    val pasajero = Pasajero(name,surNa,mail,tel)
-    return pasajero
 }
+
+

@@ -1,5 +1,7 @@
 package com.proyecto.proyecto.tablas;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -32,7 +34,8 @@ public class Tren {
 	private int capacidad;
 	
     @ManyToOne(fetch = FetchType.LAZY) 
-    @JoinColumn(name = "ruta_id", nullable = false)  
+    @JoinColumn(name = "ruta_id", nullable = false)
+    @JsonBackReference
     private Rutas ruta;
 
 	public Long getId() {

@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.proyecto.proyecto.services.PasajeroService;
-import com.proyecto.proyecto.tablas.Billete;
+
 import com.proyecto.proyecto.tablas.Pasajero;
 
 @RestController

@@ -1,9 +1,11 @@
 package com.proyecto.Api
+import android.util.Log
 import androidx.compose.runtime.State
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.proyecto.Clases.Pasajero
 import com.proyecto.Clases.Rutas
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -11,7 +13,7 @@ import retrofit2.HttpException
 import java.io.IOException
 
 class RutasViewModel: ViewModel() {
-
+//-------------------------------------------------------------------------------------------------
     private val _rutas = mutableStateOf<List<Rutas>>(emptyList())
     val rutas: State<List<Rutas>> get() = _rutas
 
@@ -43,9 +45,8 @@ class RutasViewModel: ViewModel() {
             }
         }
     }
-
+//-----------------------------------------------------------------------------------
     val ciudad = mutableStateOf<List<Rutas>>(emptyList())
-
 
 
     fun buscarOrigen(lugar: String): List<Rutas> {
@@ -68,5 +69,43 @@ class RutasViewModel: ViewModel() {
         }
         return ciudad.value
     }
+
+    //-----------------------------------------------------------------------
+    val pasajeroGuardado = mutableStateOf<Pasajero?>(null)
+
+    fun guardarPasajero(pasajero: Pasajero): Pasajero? {
+
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+
+                val response = RutasApi.retrofitService.crearPasajero(pasajero)
+
+
+                if (response.isSuccessful) {
+
+                    val guardado = response.body()
+
+                    if (guardado != null) {
+                        pasajeroGuardado.value = guardado
+                    } else {
+
+                        Log.e("ERROR", "El cuerpo de la respuesta es nulo")
+                    }
+                } else {
+
+                    Log.e("ERROR", "Error al guardar pasajero: ${response.message()}")
+                }
+            } catch (e: IOException) {
+
+                Log.e("ERROR", "Error de conexión: ${e.message}")
+            } catch (e: Exception) {
+
+                Log.e("ERROR", "Error general: ${e.message}")
+            }
+        }
+
+        return pasajeroGuardado.value
+    }
+
 
 }
