@@ -14,15 +14,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 
 import androidx.compose.runtime.mutableStateOf
@@ -36,20 +35,45 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import com.google.gson.Gson
 import com.proyecto.Api.RutasViewModel
+import com.proyecto.Clases.Pasajero
 import com.proyecto.Clases.Rutas
 import com.proyecto.R
+import com.proyecto.navegacion.Routes
 import com.proyecto.ui.theme.Blancofondo
 import com.proyecto.ui.theme.IndianRed
 import com.proyecto.ui.theme.RojoProfundo
+import com.proyecto.ui.theme.rosaPalo
 
 
 @Composable
-fun menuInicio(modifier: Modifier= Modifier,rutasViewModel: RutasViewModel) {
+fun menuInicio(
+    modifier: Modifier = Modifier,
+    rutasViewModel: RutasViewModel,
+    navigationController: NavHostController
+) {
+
+    val deliusFont = FontFamily(
+        Font(R.font.delius_regular)
+    )
+
+    val pasajeroJson = navigationController.previousBackStackEntry
+        ?.savedStateHandle
+        ?.get<String>("usuario")
+    val persona = if (pasajeroJson != null) {
+        Gson().fromJson(pasajeroJson, Pasajero::class.java)
+    } else {
+        null
+    }
+
     var routes by remember { mutableStateOf<List<Rutas>>(emptyList()) }
         Column(modifier = Modifier
             .fillMaxSize()
@@ -59,24 +83,39 @@ fun menuInicio(modifier: Modifier= Modifier,rutasViewModel: RutasViewModel) {
                 .height(190.dp)
                 .background(RojoProfundo),Arrangement.Center) {
 
+                Text("Usuario: ${persona?.nombre}\n" +
+                        "Apellido: ${persona?.apellido}\n",
+                    fontFamily = deliusFont,
+                    fontWeight = FontWeight.Bold,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.padding(5.dp).background(Blancofondo))
+
                 Image(
+
                     painter = painterResource(id = R.drawable.img_0928),
                     contentDescription = "Fondo",
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
                         .fillMaxSize()
                         .alpha(0.5f)
+
                 )
+
+
 
             }
             Row (modifier= Modifier.fillMaxWidth().padding(horizontal = 20.dp), horizontalArrangement = Arrangement.SpaceBetween) {
-                Button(onClick = {}) {
+                Button(onClick = {navigationController.navigate(Routes.Pantalla1.misRutas)},
+                    colors = ButtonDefaults.buttonColors(rosaPalo),
+                    shape = RoundedCornerShape(10.dp) ) {
+
                     Text(
-                        text = "Atras",
-                        color = Color.White,
+                        text = "Atrás",
+                        color = Color.Black,
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Bold,
                         textAlign = TextAlign.Center
+
                     )
 
                 }
@@ -93,7 +132,8 @@ fun menuInicio(modifier: Modifier= Modifier,rutasViewModel: RutasViewModel) {
                    routes = rutasViewModel.buscarOrigen(ciudadDePartida)
 
 
-                }) {
+                },colors = ButtonDefaults.buttonColors(RojoProfundo),
+                    shape = RoundedCornerShape(10.dp) ) {
                     Text(
                         text = "Buscar",
                         color = Color.White,
@@ -105,8 +145,8 @@ fun menuInicio(modifier: Modifier= Modifier,rutasViewModel: RutasViewModel) {
                 }
 
             }
-            buscadorFinal(routes)
-            Lugares(rutasViewModel = rutasViewModel)
+            buscadorFinal(routes,navigationController)
+            Lugares(rutasViewModel = rutasViewModel,navigationController)
 
         }
 
@@ -114,7 +154,7 @@ fun menuInicio(modifier: Modifier= Modifier,rutasViewModel: RutasViewModel) {
 
 
 @Composable
-fun buscadorFinal(routes: List<Rutas>) {
+fun buscadorFinal(routes: List<Rutas>, navigationController: NavHostController) {
     if (routes.isNotEmpty()) {
 
         Column(modifier = Modifier
@@ -130,7 +170,7 @@ fun buscadorFinal(routes: List<Rutas>) {
                 val trenes = ruta.trenes.size
                 Box(
                     modifier = Modifier
-                        .clickable(onClick = {})
+                        .clickable(onClick = {navigationController.navigate("billetes")})
                         .fillMaxWidth()
                         .height(45.dp)
                         .clip(RoundedCornerShape(12.dp))
@@ -168,7 +208,7 @@ fun buscadorFinal(routes: List<Rutas>) {
 
 
 @Composable
-fun Lugares ( rutasViewModel: RutasViewModel){
+fun Lugares (rutasViewModel: RutasViewModel, navigationController: NavHostController){
     val rutas = rutasViewModel.rutas.value
     val error = rutasViewModel.error.value
     if (error != null) {
@@ -189,7 +229,7 @@ fun Lugares ( rutasViewModel: RutasViewModel){
                 val trenes = ruta.trenes.size
                 Box(
                     modifier = Modifier
-                        .clickable(onClick = {})
+                        .clickable(onClick = {navigationController.navigate("billetes")})
                         .fillMaxWidth()
                         .height(45.dp)
                         .clip(RoundedCornerShape(12.dp))

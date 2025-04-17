@@ -8,17 +8,22 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 
 import androidx.compose.foundation.layout.fillMaxSize
-
 import androidx.compose.foundation.layout.padding
 
 import androidx.compose.material3.Scaffold
 
 import androidx.compose.ui.Modifier
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+
+import androidx.navigation.compose.rememberNavController
 
 import com.proyecto.Api.RutasViewModel
+import com.proyecto.Screens.aceptarBillete
 import com.proyecto.Screens.cuerpoPagina
-
 import com.proyecto.Screens.menuInicio
+
+import com.proyecto.navegacion.Routes
 
 import com.proyecto.ui.theme.ProyectoTheme
 
@@ -34,8 +39,14 @@ class MainActivity : ComponentActivity() {
         setContent {
             ProyectoTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    //cuerpoPagina(Modifier.padding(innerPadding),rutasViewModel = rutasViewModel)
-                    menuInicio(Modifier.padding(innerPadding),rutasViewModel = rutasViewModel)
+                    val navigationController = rememberNavController()
+                    NavHost(navController = navigationController, startDestination = "billetes"){
+                        composable(Routes.Pantalla1.misRutas) {cuerpoPagina(Modifier.padding(innerPadding),rutasViewModel = rutasViewModel,navigationController) }
+                        composable(Routes.Pantalla2.misRutas) {menuInicio(Modifier.padding(innerPadding),rutasViewModel = rutasViewModel,navigationController)  }
+                        composable("billetes") { aceptarBillete(innerPadding,navigationController,rutasViewModel) }
+                    }
+
+
 
 
                 }

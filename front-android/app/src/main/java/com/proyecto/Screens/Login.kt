@@ -34,14 +34,21 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import com.google.gson.Gson
 import com.proyecto.Api.RutasViewModel
 import com.proyecto.Clases.Pasajero
 import com.proyecto.R
+import com.proyecto.navegacion.Routes
 import com.proyecto.ui.theme.IndianRed
 import com.proyecto.ui.theme.RojoFondo
 
 @Composable
-fun cuerpoPagina(modifier: Modifier = Modifier,rutasViewModel: RutasViewModel) {
+fun cuerpoPagina(
+    modifier: Modifier = Modifier,
+    rutasViewModel: RutasViewModel,
+    navigationController: NavHostController
+){
 
     var name by remember { mutableStateOf("") }
     var surNa by remember { mutableStateOf("") }
@@ -57,7 +64,7 @@ fun cuerpoPagina(modifier: Modifier = Modifier,rutasViewModel: RutasViewModel) {
             contentScale = ContentScale.Crop,
             modifier = Modifier
                 .fillMaxSize()
-                .alpha(0.5f) // Ajusta la opacidad
+                .alpha(0.5f)
         )
 
         Column(Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center, Alignment.CenterHorizontally) {
@@ -79,13 +86,14 @@ fun cuerpoPagina(modifier: Modifier = Modifier,rutasViewModel: RutasViewModel) {
 
                 }
 
-                inicio(modifier = Modifier.fillMaxWidth().align(Alignment.CenterHorizontally),completado,name,surNa,mail,tel,rutasViewModel)
+               inicio(modifier = Modifier.fillMaxWidth().align(Alignment.CenterHorizontally),completado,name,surNa,mail,tel,rutasViewModel,navigationController)
 
 
 
             }
         }
     }
+
 }
 
 @Composable
@@ -136,8 +144,9 @@ fun inicio(
     surNa: String,
     mail: String,
     tel: String,
-    rutasViewModel: RutasViewModel
-) {
+    rutasViewModel: RutasViewModel,
+    navigationController: NavHostController
+){
 
     Button(
         onClick = {
@@ -145,6 +154,12 @@ fun inicio(
             if (completado) {
                 val usuario = Pasajero(name, surNa, mail, tel)
                 rutasViewModel.guardarPasajero(usuario)
+
+                val pasajeroJson = Gson().toJson(usuario)
+                navigationController.currentBackStackEntry
+                    ?.savedStateHandle
+                    ?.set("usuario", pasajeroJson)
+                navigationController.navigate(Routes.Pantalla2.misRutas)
             }
         },
         colors = ButtonDefaults.buttonColors(IndianRed),
@@ -153,6 +168,7 @@ fun inicio(
     ) {
         Text(stringResource(id = R.string.entrar), fontWeight = FontWeight.Bold)
     }
+
 }
 
 

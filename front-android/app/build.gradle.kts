@@ -1,8 +1,11 @@
+import org.gradle.kotlin.dsl.implementation
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     kotlin("plugin.serialization") version "1.9.0"
+    id ("kotlin-parcelize")
 }
 
 android {
@@ -43,6 +46,7 @@ android {
 dependencies {
     implementation ("androidx.compose.runtime:runtime:1.7.8")  // O la versión más reciente que estés utilizando
     implementation ("androidx.compose.ui:ui:1.7.8")
+    implementation ("androidx.navigation:navigation-compose:2.7.7")
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

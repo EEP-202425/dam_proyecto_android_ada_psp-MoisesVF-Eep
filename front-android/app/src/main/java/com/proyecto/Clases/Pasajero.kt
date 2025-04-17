@@ -10,23 +10,22 @@ data class Pasajero (
      val nombre:String
     ,val apellido:String
     ,val email: String
-    ,val telefono : String ){
+    ,val telefono : String )
 
     @Composable
-    fun getName():String{
-        return this.nombre
+    fun getName(pasajero: Pasajero):String{
+        return pasajero.nombre
     }
     @Composable
-    fun getApe():String{
-        return this.apellido
+    fun getApe(pasajero: Pasajero):String{
+        return pasajero.apellido
     }
     @Composable
-    fun getMail():String{
-        return this.email
+    fun getMail(pasajero: Pasajero):String{
+        return pasajero.email
     }
     @Composable
-    fun getTelef():String{
-        return this.telefono
+    fun getTelef(pasajero: Pasajero):String{
+        return pasajero.telefono
     }
 
-}
