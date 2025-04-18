@@ -37,6 +37,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.google.gson.Gson
 import com.proyecto.Api.RutasViewModel
+import com.proyecto.Api.pasajerosViewModel
 import com.proyecto.Clases.Pasajero
 import com.proyecto.R
 import com.proyecto.navegacion.Routes
@@ -47,7 +48,8 @@ import com.proyecto.ui.theme.RojoFondo
 fun cuerpoPagina(
     modifier: Modifier = Modifier,
     rutasViewModel: RutasViewModel,
-    navigationController: NavHostController
+    navigationController: NavHostController,
+    pasajerosViewModel: pasajerosViewModel
 ){
 
     var name by remember { mutableStateOf("") }
@@ -86,7 +88,7 @@ fun cuerpoPagina(
 
                 }
 
-               inicio(modifier = Modifier.fillMaxWidth().align(Alignment.CenterHorizontally),completado,name,surNa,mail,tel,rutasViewModel,navigationController)
+               inicio(modifier = Modifier.fillMaxWidth().align(Alignment.CenterHorizontally),completado,name,surNa,mail,tel,rutasViewModel,navigationController,pasajerosViewModel)
 
 
 
@@ -145,7 +147,8 @@ fun inicio(
     mail: String,
     tel: String,
     rutasViewModel: RutasViewModel,
-    navigationController: NavHostController
+    navigationController: NavHostController,
+    pasajerosViewModel: pasajerosViewModel
 ){
 
     Button(
@@ -154,11 +157,8 @@ fun inicio(
             if (completado) {
                 val usuario = Pasajero(name, surNa, mail, tel)
                 rutasViewModel.guardarPasajero(usuario)
+                pasajerosViewModel.personaSeleccionada = usuario
 
-                val pasajeroJson = Gson().toJson(usuario)
-                navigationController.currentBackStackEntry
-                    ?.savedStateHandle
-                    ?.set("usuario", pasajeroJson)
                 navigationController.navigate(Routes.Pantalla2.misRutas)
             }
         },

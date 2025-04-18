@@ -1,8 +1,10 @@
 package com.proyecto.Api
 import android.util.Log
 import androidx.compose.runtime.State
+import androidx.compose.runtime.getValue
 
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.proyecto.Clases.Pasajero
@@ -14,6 +16,7 @@ import java.io.IOException
 
 class RutasViewModel: ViewModel() {
 //-------------------------------------------------------------------------------------------------
+    var rutaSeleccionada by mutableStateOf<Rutas?>(null)
     private val _rutas = mutableStateOf<List<Rutas>>(emptyList())
     val rutas: State<List<Rutas>> get() = _rutas
 

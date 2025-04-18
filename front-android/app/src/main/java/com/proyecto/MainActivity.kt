@@ -19,6 +19,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 
 import com.proyecto.Api.RutasViewModel
+import com.proyecto.Api.pasajerosViewModel
 import com.proyecto.Screens.aceptarBillete
 import com.proyecto.Screens.cuerpoPagina
 import com.proyecto.Screens.menuInicio
@@ -30,6 +31,8 @@ import com.proyecto.ui.theme.ProyectoTheme
 
 class MainActivity : ComponentActivity() {
     private val rutasViewModel: RutasViewModel by viewModels()
+    private val pasajerosViewModel: pasajerosViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -40,10 +43,10 @@ class MainActivity : ComponentActivity() {
             ProyectoTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     val navigationController = rememberNavController()
-                    NavHost(navController = navigationController, startDestination = "billetes"){
-                        composable(Routes.Pantalla1.misRutas) {cuerpoPagina(Modifier.padding(innerPadding),rutasViewModel = rutasViewModel,navigationController) }
-                        composable(Routes.Pantalla2.misRutas) {menuInicio(Modifier.padding(innerPadding),rutasViewModel = rutasViewModel,navigationController)  }
-                        composable("billetes") { aceptarBillete(innerPadding,navigationController,rutasViewModel) }
+                    NavHost(navController = navigationController, startDestination = Routes.Pantalla1.misRutas){
+                        composable(Routes.Pantalla1.misRutas) {cuerpoPagina(Modifier.padding(innerPadding),rutasViewModel = rutasViewModel,navigationController, pasajerosViewModel) }
+                        composable(Routes.Pantalla2.misRutas) {menuInicio(Modifier.padding(innerPadding),rutasViewModel = rutasViewModel,navigationController, pasajerosViewModel) }
+                        composable("billetes") { aceptarBillete(innerPadding,navigationController,rutasViewModel,pasajerosViewModel) }
                     }
 
 

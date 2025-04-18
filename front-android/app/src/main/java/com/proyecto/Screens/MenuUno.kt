@@ -44,6 +44,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.google.gson.Gson
 import com.proyecto.Api.RutasViewModel
+import com.proyecto.Api.pasajerosViewModel
 import com.proyecto.Clases.Pasajero
 import com.proyecto.Clases.Rutas
 import com.proyecto.R
@@ -58,21 +59,15 @@ import com.proyecto.ui.theme.rosaPalo
 fun menuInicio(
     modifier: Modifier = Modifier,
     rutasViewModel: RutasViewModel,
-    navigationController: NavHostController
+    navigationController: NavHostController,
+    pasajerosViewModel: pasajerosViewModel
 ) {
 
     val deliusFont = FontFamily(
         Font(R.font.delius_regular)
     )
 
-    val pasajeroJson = navigationController.previousBackStackEntry
-        ?.savedStateHandle
-        ?.get<String>("usuario")
-    val persona = if (pasajeroJson != null) {
-        Gson().fromJson(pasajeroJson, Pasajero::class.java)
-    } else {
-        null
-    }
+    val persona = pasajerosViewModel.personaSeleccionada
 
     var routes by remember { mutableStateOf<List<Rutas>>(emptyList()) }
         Column(modifier = Modifier
@@ -88,7 +83,8 @@ fun menuInicio(
                     fontFamily = deliusFont,
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Center,
-                    modifier = Modifier.padding(5.dp).background(Blancofondo))
+                    modifier = Modifier.padding(5.dp).background(Blancofondo).clickable(onClick = {})
+                    )
 
                 Image(
 
@@ -145,7 +141,7 @@ fun menuInicio(
                 }
 
             }
-            buscadorFinal(routes,navigationController)
+            buscadorFinal(routes,navigationController,rutasViewModel)
             Lugares(rutasViewModel = rutasViewModel,navigationController)
 
         }
@@ -154,7 +150,7 @@ fun menuInicio(
 
 
 @Composable
-fun buscadorFinal(routes: List<Rutas>, navigationController: NavHostController) {
+fun buscadorFinal(routes: List<Rutas>, navigationController: NavHostController,rutasViewModel: RutasViewModel) {
     if (routes.isNotEmpty()) {
 
         Column(modifier = Modifier
@@ -170,7 +166,9 @@ fun buscadorFinal(routes: List<Rutas>, navigationController: NavHostController) 
                 val trenes = ruta.trenes.size
                 Box(
                     modifier = Modifier
-                        .clickable(onClick = {navigationController.navigate("billetes")})
+                        .clickable(onClick = {
+                            rutasViewModel.rutaSeleccionada = ruta
+                            navigationController.navigate("billetes")})
                         .fillMaxWidth()
                         .height(45.dp)
                         .clip(RoundedCornerShape(12.dp))
@@ -195,7 +193,7 @@ fun buscadorFinal(routes: List<Rutas>, navigationController: NavHostController) 
 
 
             Text(
-                text = "No se encontraron rutas.",
+                text = "No se buscaron rutas.",
                 modifier = Modifier.padding(16.dp),
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Bold,
@@ -229,7 +227,9 @@ fun Lugares (rutasViewModel: RutasViewModel, navigationController: NavHostContro
                 val trenes = ruta.trenes.size
                 Box(
                     modifier = Modifier
-                        .clickable(onClick = {navigationController.navigate("billetes")})
+                        .clickable(onClick = {
+                            rutasViewModel.rutaSeleccionada = ruta
+                            navigationController.navigate("billetes")})
                         .fillMaxWidth()
                         .height(45.dp)
                         .clip(RoundedCornerShape(12.dp))

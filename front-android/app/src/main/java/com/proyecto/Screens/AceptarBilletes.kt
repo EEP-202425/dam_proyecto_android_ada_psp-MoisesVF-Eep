@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 
@@ -34,6 +35,7 @@ import androidx.compose.ui.unit.sp
 
 import androidx.navigation.NavHostController
 import com.proyecto.Api.RutasViewModel
+import com.proyecto.Api.pasajerosViewModel
 import com.proyecto.navegacion.Routes
 import com.proyecto.ui.theme.Blancofondo
 import com.proyecto.ui.theme.IndianRed
@@ -44,10 +46,12 @@ import com.proyecto.ui.theme.rosaPalo
 fun aceptarBillete(
     innerPadding: PaddingValues,
     navigationController: NavHostController,
-    rutasViewModel: RutasViewModel
+    rutasViewModel: RutasViewModel,
+    pasajerosViewModel: pasajerosViewModel
 ) {
-
-        Column(horizontalAlignment = Alignment.CenterHorizontally,modifier = Modifier.fillMaxSize().background(rosaPalo)) {
+        val ruta = rutasViewModel.rutaSeleccionada
+        val persona = pasajerosViewModel.personaSeleccionada
+        Column(horizontalAlignment = Alignment.CenterHorizontally,modifier = Modifier.fillMaxSize().background(rosaPalo).padding(10.dp)) {
             Spacer(modifier = Modifier.size(75.dp))
 
             Button(onClick = {navigationController.navigate(Routes.Pantalla2.misRutas)},
@@ -66,7 +70,19 @@ fun aceptarBillete(
                         .alpha(0.3f)
                         .clip(RoundedCornerShape(10.dp))
                 )
-                Text("hola", textAlign = TextAlign.Center, fontWeight = FontWeight.ExtraBold, fontSize = 20.sp)
+                Row() {
+                Text("Usuario: ${persona?.nombre}\n" +
+                        "Apellido: ${persona?.apellido}\n" +
+                        "mail: ${persona?.email}\n" +
+                        "Telefono: ${persona?.telefono}"
+                    , textAlign = TextAlign.Center, fontWeight = FontWeight.ExtraBold, fontSize = 20.sp)
+
+                Text("Origen: ${ruta?.origen}\n" +
+                        "Destino: ${ruta?.llegada}\n" +
+                        "${ruta?.cogerPrimero()}\n"
+
+                    , textAlign = TextAlign.Center, fontWeight = FontWeight.ExtraBold, fontSize = 20.sp)
+                }
             }
             Spacer(modifier = Modifier.size(15.dp))
             Image(painter = painterResource(id = com.proyecto.R.drawable.keyboard_double_arrow_down_24dp_000000_fill0_wght400_grad0_opsz24),
