@@ -17,17 +17,23 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.proyecto.proyecto.repositories.IBilleteRepository;
 import com.proyecto.proyecto.services.PasajeroService;
-
+import com.proyecto.proyecto.tablas.Billete;
+import com.proyecto.proyecto.tablas.Destinos;
 import com.proyecto.proyecto.tablas.Pasajero;
+import com.proyecto.proyecto.tablas.Rutas;
 
 @RestController
 @RequestMapping("/pasajero")
 public class PasajeroController {
-
+	
+	
+	@Autowired
+	private IBilleteRepository billeteRepository;
 	@Autowired
 	private PasajeroService ps;
-
+	
 	@GetMapping
 	public ResponseEntity<List<Pasajero>> getPasajeros() {
 		return ResponseEntity.ok(ps.getPasajeros());
@@ -63,5 +69,13 @@ public class PasajeroController {
 				: "Pasajero con id:" + id + " No se borro";
 
 	}
+	@GetMapping("/{id}/billetes")
+    public ResponseEntity<List<Billete>> getBilletesByPasajero(@PathVariable Long id) {
+        List<Billete> billetes = billeteRepository.findByPasajeroId(id);
+        return ResponseEntity.ok(billetes);
+    }
+	
+	
+	
 
 }

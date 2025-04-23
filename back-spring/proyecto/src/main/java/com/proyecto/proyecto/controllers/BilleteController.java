@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,13 +38,17 @@ public class BilleteController {
 
 	}
 	
-	@PostMapping
-	public ResponseEntity<Billete> savedBillete(@RequestBody Billete billete, UriComponentsBuilder ucb) {
-
-		Billete saveBillete = billeteService.saveBillete(billete);
-		URI location = ucb.path("/billete/{id}").buildAndExpand(saveBillete.getId()).toUri();
-
-		return ResponseEntity.created(location).body(saveBillete);
-	}
+	  @PostMapping
+	    public ResponseEntity<Billete> createBillete(@RequestBody Billete billete) {
+	        Billete savedBillete = billeteService.saveBillete(billete);
+	        return ResponseEntity.status(HttpStatus.CREATED).body(savedBillete);
+	    }
+	
+    @PostMapping("/pasajero/{pasajeroId}")
+    public ResponseEntity<Billete> crearBillete(@PathVariable Long pasajeroId,
+                                                @RequestBody Billete billete) {
+        Billete nuevo = billeteService.crearBilleteParaPasajero(pasajeroId, billete);
+        return ResponseEntity.ok(nuevo);
+    }
 
 }

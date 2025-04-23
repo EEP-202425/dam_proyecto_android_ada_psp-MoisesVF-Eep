@@ -155,7 +155,13 @@ fun inicio(
         onClick = {
 
             if (completado) {
-                val usuario = Pasajero(name, surNa, mail, tel)
+                val usuario = Pasajero(
+                    nombre = name,
+                    apellido = surNa,
+                    email = mail,
+                    telefono = tel
+                )
+
                 rutasViewModel.guardarPasajero(usuario)
                 pasajerosViewModel.personaSeleccionada = usuario
 

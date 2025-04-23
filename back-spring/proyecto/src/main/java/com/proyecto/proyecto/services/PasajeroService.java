@@ -9,7 +9,9 @@ import org.springframework.stereotype.Service;
 
 import com.proyecto.proyecto.repositories.IPasajeroRepository;
 import com.proyecto.proyecto.tablas.Billete;
+import com.proyecto.proyecto.tablas.Destinos;
 import com.proyecto.proyecto.tablas.Pasajero;
+import com.proyecto.proyecto.tablas.Rutas;
 
 @Service
 public class PasajeroService {
@@ -49,5 +51,6 @@ public class PasajeroService {
 		}
 
 	}
+	
 
 }

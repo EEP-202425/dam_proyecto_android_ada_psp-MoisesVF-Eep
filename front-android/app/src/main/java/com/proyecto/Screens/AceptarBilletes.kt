@@ -1,9 +1,9 @@
 package com.proyecto.Screens
 
+import android.util.Log
 import androidx.compose.foundation.Image
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -18,7 +18,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.R
+
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -36,10 +36,9 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.proyecto.Api.RutasViewModel
 import com.proyecto.Api.pasajerosViewModel
+import com.proyecto.Clases.Billete
 import com.proyecto.navegacion.Routes
-import com.proyecto.ui.theme.Blancofondo
 import com.proyecto.ui.theme.IndianRed
-import com.proyecto.ui.theme.RojoFondo
 import com.proyecto.ui.theme.rosaPalo
 
 @Composable
@@ -91,14 +90,30 @@ fun aceptarBillete(
             ,contentScale = ContentScale.Crop,
                 modifier = Modifier.clip(RoundedCornerShape(16.dp)))
             Spacer(modifier = Modifier.size(15.dp))
-            Button(onClick = {},
-                colors = ButtonDefaults.buttonColors(IndianRed),
-                shape = RoundedCornerShape(10.dp)) {
-
-                Text("Aceptar")
-
-            }
+            CrearBilleteButton(rutasViewModel, persona?.id, ruta?.id)
         }
 
 
+
+
+
+}
+@Composable
+fun CrearBilleteButton(viewModel: RutasViewModel, personaId: Long?, rutaId: Long?) {
+    val randomAsiento = (1..100).random()
+
+
+    Button(onClick = {
+        if (personaId != null && rutaId != null) {
+
+            val billete = Billete(asiento = randomAsiento, pasajero_id = personaId, ruta_id = rutaId)
+
+
+            viewModel.guardarBillete(billete)
+        } else {
+            Log.e("ERROR", "ID del pasajero es nulo")
+        }
+    }) {
+        Text(text = "Crear Billete")
+    }
 }

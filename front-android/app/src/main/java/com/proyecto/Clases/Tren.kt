@@ -7,7 +7,8 @@ data class Tren(
     val id: Long,
     val nombre: NombreTren,
     val tipo: TipoTren,
-    val capacidad: Int) {
+    val capacidad: Int)
+    {
 
     override fun toString(): String {
         return "Tren: nombre=$nombre\n" +

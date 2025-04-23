@@ -1,5 +1,7 @@
 package com.proyecto.proyecto.tablas;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -21,8 +23,9 @@ public class Billete {
 	
 	
 	
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "pasajero_id", nullable = false)
+	@JsonBackReference
 	private Pasajero pasajero;
 	
 	

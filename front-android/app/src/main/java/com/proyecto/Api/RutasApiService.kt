@@ -2,6 +2,7 @@ package com.proyecto.Api
 
 
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
+import com.proyecto.Clases.Billete
 import com.proyecto.Clases.Pasajero
 import com.proyecto.Clases.Rutas
 import kotlinx.serialization.ExperimentalSerializationApi
@@ -38,6 +39,9 @@ suspend fun getRutaByCiudad(@Path("Origen")id: String): List<Rutas>
 
 @POST("pasajero")
 suspend fun crearPasajero(@Body pasajero: Pasajero): Response <Pasajero>
+
+@POST("billete")
+suspend fun crearBillete(@Body billete: Billete): Response <Billete>
 
 
 }

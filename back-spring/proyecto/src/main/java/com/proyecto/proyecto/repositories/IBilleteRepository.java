@@ -9,6 +9,6 @@ import com.proyecto.proyecto.tablas.Billete;
 
 @Repository
 public interface IBilleteRepository extends JpaRepository<Billete, Long> {
-	List<Billete> findAllByPasajeroId(Long id);
+	 List<Billete> findByPasajeroId(Long pasajeroId);
 
 }

@@ -7,6 +7,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.proyecto.Clases.Billete
 import com.proyecto.Clases.Pasajero
 import com.proyecto.Clases.Rutas
 import kotlinx.coroutines.Dispatchers
@@ -109,6 +110,35 @@ class RutasViewModel: ViewModel() {
 
         return pasajeroGuardado.value
     }
+    //-----------------------------------------------------------------------------
+    val billeteGuardado = mutableStateOf<Billete?>(null)
+
+    fun guardarBillete(billete: Billete) {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+
+                val response = RutasApi.retrofitService.crearBillete(billete)
+
+                if (response.isSuccessful) {
+
+                    val guardado = response.body()
+                    if (guardado != null) {
+
+                        billeteGuardado.value = guardado
+                    } else {
+                        Log.e("ERROR", "El cuerpo de la respuesta es nulo")
+                    }
+                } else {
+                    Log.e("ERROR", "Error al guardar billete: ${response.message()}")
+                }
+            } catch (e: IOException) {
+                Log.e("ERROR", "Error de conexión: ${e.message}")
+            } catch (e: Exception) {
+                Log.e("ERROR", "Error general: ${e.message}")
+            }
+        }
 
 
-}
+    }
+
+    }
