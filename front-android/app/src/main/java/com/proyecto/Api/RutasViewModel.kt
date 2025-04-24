@@ -113,11 +113,11 @@ class RutasViewModel: ViewModel() {
     //-----------------------------------------------------------------------------
     val billeteGuardado = mutableStateOf<Billete?>(null)
 
-    fun guardarBillete(billete: Billete) {
+    fun guardarBillete(id:Long,billete: Billete) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
 
-                val response = RutasApi.retrofitService.crearBillete(billete)
+                val response = RutasApi.retrofitService.crearBillete(id,billete)
 
                 if (response.isSuccessful) {
 

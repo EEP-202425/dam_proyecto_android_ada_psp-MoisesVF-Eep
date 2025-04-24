@@ -40,8 +40,8 @@ suspend fun getRutaByCiudad(@Path("Origen")id: String): List<Rutas>
 @POST("pasajero")
 suspend fun crearPasajero(@Body pasajero: Pasajero): Response <Pasajero>
 
-@POST("billete")
-suspend fun crearBillete(@Body billete: Billete): Response <Billete>
+@POST("billete/pasajero/{pasajeroId}")
+suspend fun crearBillete(@Path("pasajeroId") id: Long, @Body billete: Billete): Response <Billete>
 
 
 }
