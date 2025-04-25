@@ -46,7 +46,7 @@ class MainActivity : ComponentActivity() {
                     NavHost(navController = navigationController, startDestination = Routes.Pantalla1.misRutas){
                         composable(Routes.Pantalla1.misRutas) {cuerpoPagina(Modifier.padding(innerPadding),rutasViewModel = rutasViewModel,navigationController, pasajerosViewModel) }
                         composable(Routes.Pantalla2.misRutas) {menuInicio(Modifier.padding(innerPadding),rutasViewModel = rutasViewModel,navigationController, pasajerosViewModel) }
-                        composable("billetes") { aceptarBillete(innerPadding,navigationController,rutasViewModel,pasajerosViewModel) }
+                        composable(Routes.Pantalla3.misRutas) { aceptarBillete(innerPadding,navigationController,rutasViewModel,pasajerosViewModel) }
                     }
 
 

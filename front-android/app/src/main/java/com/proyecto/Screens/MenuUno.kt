@@ -168,7 +168,7 @@ fun buscadorFinal(routes: List<Rutas>, navigationController: NavHostController,r
                     modifier = Modifier
                         .clickable(onClick = {
                             rutasViewModel.rutaSeleccionada = ruta
-                            navigationController.navigate("billetes")})
+                            navigationController.navigate(Routes.Pantalla3.misRutas)})
                         .fillMaxWidth()
                         .height(45.dp)
                         .clip(RoundedCornerShape(12.dp))
