@@ -163,7 +163,7 @@ fun buscadorFinal(routes: List<Rutas>, navigationController: NavHostController,r
             routes.forEach { ruta ->
                 val origen = ruta.origen.name
                 val destino = ruta.llegada.name
-                val trenes = ruta.trenes.size
+                val trenes = ruta.trenes?.size
                 Box(
                     modifier = Modifier
                         .clickable(onClick = {
@@ -224,7 +224,7 @@ fun Lugares (rutasViewModel: RutasViewModel, navigationController: NavHostContro
             rutas.forEach { ruta ->
                 val origen = ruta.origen.name
                 val destino = ruta.llegada.name
-                val trenes = ruta.trenes.size
+                val trenes = ruta.trenes?.size
                 Box(
                     modifier = Modifier
                         .clickable(onClick = {

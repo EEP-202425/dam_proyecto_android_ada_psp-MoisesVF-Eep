@@ -5,13 +5,16 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class Billete(
-
+    val id: Long? = null,
     val asiento: Int,
-    val pasajero_id: Long,
-    val ruta_id: Long
+    val ruta: Rutas
 
 
-) {
+)
+
+
+
+{
 
 
 }

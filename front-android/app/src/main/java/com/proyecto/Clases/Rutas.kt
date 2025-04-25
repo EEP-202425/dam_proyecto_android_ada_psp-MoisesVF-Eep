@@ -7,11 +7,13 @@ data class Rutas(
     val id:Long,
     val origen: Ciudades,
     val llegada: Ciudades,
-    val trenes: List<Tren> = listOf()
+    val trenes: List<Tren>? = null
     ){
     fun cogerPrimero(): Tren? {
-        if (!trenes.isEmpty()) {
-            return trenes.get(0)
+        trenes?.isEmpty()?.let {
+            if (!it) {
+                return trenes?.get(0)
+            }
         }
         return null
     }

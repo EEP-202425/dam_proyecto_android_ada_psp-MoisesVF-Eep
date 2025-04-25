@@ -51,6 +51,20 @@ public class PasajeroService {
 		}
 
 	}
-	
+	public Long obtenerId(Pasajero pasajero) {
+	    Optional<Pasajero> pasajeroExistente = pasajeroRepository.findByNombreAndApellidoAndEmailAndTelefono(
+	        pasajero.getNombre(),
+	        pasajero.getApellido(),
+	        pasajero.getEmail(),
+	        pasajero.getTelefono()
+	    );
+
+	    if (pasajeroExistente.isPresent()) {
+	        return pasajeroExistente.get().getId();
+	    } else {
+	        throw new RuntimeException("Pasajero no encontrado");
+	    }
+	}
+
 
 }

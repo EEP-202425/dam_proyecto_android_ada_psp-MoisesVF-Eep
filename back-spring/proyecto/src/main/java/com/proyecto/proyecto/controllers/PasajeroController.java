@@ -74,7 +74,11 @@ public class PasajeroController {
         List<Billete> billetes = billeteRepository.findByPasajeroId(id);
         return ResponseEntity.ok(billetes);
     }
-	
+	@PostMapping("/id")
+	public ResponseEntity<Long> getIdPasajero(@RequestBody Pasajero pasajero) {
+	    return ResponseEntity.ok(ps.obtenerId(pasajero));
+	}
+
 	
 	
 

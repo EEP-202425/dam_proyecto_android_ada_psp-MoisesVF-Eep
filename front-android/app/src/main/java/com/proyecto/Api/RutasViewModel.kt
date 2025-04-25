@@ -113,18 +113,21 @@ class RutasViewModel: ViewModel() {
     //-----------------------------------------------------------------------------
     val billeteGuardado = mutableStateOf<Billete?>(null)
 
-    fun guardarBillete(id:Long,billete: Billete) {
+    fun guardarBillete(id: Long?, billete: Billete) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
 
-                val response = RutasApi.retrofitService.crearBillete(id,billete)
+                Log.d("GuardarBillete", "Billete: $billete")
+                Log.d("GuardarBillete", "PasajeroId: $id")
+
+
+                val response = RutasApi.retrofitService.crearBillete(id, billete)
 
                 if (response.isSuccessful) {
-
                     val guardado = response.body()
                     if (guardado != null) {
-
                         billeteGuardado.value = guardado
+                        Log.d("BilleteGuardado", "Billete guardado exitosamente: $guardado")
                     } else {
                         Log.e("ERROR", "El cuerpo de la respuesta es nulo")
                     }
@@ -137,8 +140,44 @@ class RutasViewModel: ViewModel() {
                 Log.e("ERROR", "Error general: ${e.message}")
             }
         }
-
-
     }
+
+
+    val idpasajeroGuardado = mutableStateOf<Long?>(null)
+
+    fun obtnerIdPasajero(pasajero: Pasajero?): Long? {
+
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+
+                val response = RutasApi.retrofitService.obtenerId(pasajero)
+
+
+                if (response.isSuccessful) {
+
+                    val guardado = response.body()
+
+                    if (guardado != null) {
+                        idpasajeroGuardado.value = guardado
+                    } else {
+
+                        Log.e("ERROR", "El cuerpo de la respuesta es nulo")
+                    }
+                } else {
+
+                    Log.e("ERROR", "Error al obtener id pasajero: ${response.message()}")
+                }
+            } catch (e: IOException) {
+
+                Log.e("ERROR", "Error de conexión: ${e.message}")
+            } catch (e: Exception) {
+
+                Log.e("ERROR", "Error general: ${e.message}")
+            }
+        }
+
+        return idpasajeroGuardado.value
+    }
+
 
     }

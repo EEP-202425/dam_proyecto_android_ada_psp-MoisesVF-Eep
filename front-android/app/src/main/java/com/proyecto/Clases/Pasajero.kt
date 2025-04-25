@@ -6,12 +6,12 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class Pasajero (
 
-     val id: Long? = null,
-     val nombre:String
-    ,val apellido:String
-    ,val email: String
-    ,val telefono : String
-    ,val billetes: List<Billete> = emptyList())
+
+    val nombre:String
+    , val apellido:String
+    , val email: String
+    , val telefono : String
+    , val billetes: List<Billete> = emptyList())
 
     @Composable
     fun getName(pasajero: Pasajero):String{

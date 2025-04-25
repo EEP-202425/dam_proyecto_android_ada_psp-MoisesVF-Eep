@@ -37,8 +37,11 @@ import androidx.navigation.NavHostController
 import com.proyecto.Api.RutasViewModel
 import com.proyecto.Api.pasajerosViewModel
 import com.proyecto.Clases.Billete
+import com.proyecto.Clases.Rutas
+import com.proyecto.R
 import com.proyecto.navegacion.Routes
 import com.proyecto.ui.theme.IndianRed
+import com.proyecto.ui.theme.RojoProfundo
 import com.proyecto.ui.theme.rosaPalo
 
 @Composable
@@ -50,7 +53,12 @@ fun aceptarBillete(
 ) {
         val ruta = rutasViewModel.rutaSeleccionada
         val persona = pasajerosViewModel.personaSeleccionada
-        Column(horizontalAlignment = Alignment.CenterHorizontally,modifier = Modifier.fillMaxSize().background(rosaPalo).padding(10.dp)) {
+        rutasViewModel.obtnerIdPasajero(persona)
+
+    val id: Long? = rutasViewModel.idpasajeroGuardado.value
+
+
+    Column(horizontalAlignment = Alignment.CenterHorizontally,modifier = Modifier.fillMaxSize().background(rosaPalo).padding(10.dp)) {
             Spacer(modifier = Modifier.size(75.dp))
 
             Button(onClick = {navigationController.navigate(Routes.Pantalla2.misRutas)},
@@ -61,7 +69,7 @@ fun aceptarBillete(
             Spacer(modifier = Modifier.size(15.dp))
             Box(modifier = Modifier.fillMaxWidth().height(325.dp).background(rosaPalo), contentAlignment = Alignment.Center){
                 Image(
-                    painter = painterResource(id = com.proyecto.R.drawable.ticket___free_music_icons),
+                    painter = painterResource(id = R.drawable.ticket___free_music_icons),
                     contentDescription = "Fondo",
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
@@ -76,7 +84,7 @@ fun aceptarBillete(
                         "Telefono: ${persona?.telefono}"
                     , textAlign = TextAlign.Center, fontWeight = FontWeight.ExtraBold, fontSize = 20.sp)
 
-                Text("Origen: ${ruta?.origen}\n" +
+                Text("Origen: ${ruta?.id}\n" +
                         "Destino: ${ruta?.llegada}\n" +
                         "${ruta?.cogerPrimero()}\n"
 
@@ -84,13 +92,13 @@ fun aceptarBillete(
                 }
             }
             Spacer(modifier = Modifier.size(15.dp))
-            Image(painter = painterResource(id = com.proyecto.R.drawable.keyboard_double_arrow_down_24dp_000000_fill0_wght400_grad0_opsz24),
+            Image(painter = painterResource(id = R.drawable.keyboard_double_arrow_down_24dp_000000_fill0_wght400_grad0_opsz24),
                 contentDescription = "flecha", modifier = Modifier.size(50.dp))
-            Image(painter = painterResource(id = com.proyecto.R.drawable.descargar_icono_de_billete_de_tren_con_sombra_gratis),contentDescription = "Ícono de billete de tren"
+            Image(painter = painterResource(id = R.drawable.descargar_icono_de_billete_de_tren_con_sombra_gratis),contentDescription = "Ícono de billete de tren"
             ,contentScale = ContentScale.Crop,
                 modifier = Modifier.clip(RoundedCornerShape(16.dp)))
             Spacer(modifier = Modifier.size(15.dp))
-            CrearBilleteButton(rutasViewModel, persona?.id, ruta?.id)
+            CrearBilleteButton(rutasViewModel, id, ruta)
         }
 
 
@@ -99,21 +107,26 @@ fun aceptarBillete(
 
 }
 @Composable
-fun CrearBilleteButton(viewModel: RutasViewModel, personaId: Long?, rutaId: Long?) {
+fun CrearBilleteButton(viewModel: RutasViewModel, id: Long?, rutaId: Rutas?) {
     val randomAsiento = (1..100).random()
 
-
     Button(onClick = {
-        if (personaId != null && rutaId != null) {
+        if (id != null && rutaId != null) {
 
-            val billete = Billete(asiento = randomAsiento, pasajero_id = personaId, ruta_id = rutaId)
+            Log.e("${id}","")
+            val billete = Billete(
+                asiento = randomAsiento,
+                ruta = Rutas(id = rutaId.id,rutaId.origen,rutaId.llegada,rutaId.trenes)
+            )
 
+            viewModel.guardarBillete(id,billete)
 
-            viewModel.guardarBillete(billete)
         } else {
             Log.e("ERROR", "ID del pasajero es nulo")
         }
-    }) {
+    },colors = ButtonDefaults.buttonColors(RojoProfundo),
+        shape = RoundedCornerShape(10.dp)) {
         Text(text = "Crear Billete")
+
     }
 }
