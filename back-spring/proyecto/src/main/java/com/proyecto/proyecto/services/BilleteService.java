@@ -51,7 +51,7 @@ public class BilleteService {
         return billeteRepository.save(billete);
     }
 	
-	public Optional<Billete> getById(Long id) {
-		return billeteRepository.findById(id);
+	public Optional<Long> getIdBillete(Long id) {
+		return billeteRepository.findByRuta(id);
 	}
 }
