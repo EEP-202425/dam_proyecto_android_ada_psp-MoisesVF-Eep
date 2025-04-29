@@ -34,6 +34,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 import androidx.navigation.NavHostController
+import com.proyecto.Api.BilleteViewModel
 import com.proyecto.Api.RutasViewModel
 import com.proyecto.Api.pasajerosViewModel
 import com.proyecto.Clases.Billete
@@ -49,7 +50,8 @@ fun aceptarBillete(
     innerPadding: PaddingValues,
     navigationController: NavHostController,
     rutasViewModel: RutasViewModel,
-    pasajerosViewModel: pasajerosViewModel
+    pasajerosViewModel: pasajerosViewModel,
+    billeteView: BilleteViewModel
 ) {
         val ruta = rutasViewModel.rutaSeleccionada
         val persona = pasajerosViewModel.personaSeleccionada
@@ -98,7 +100,7 @@ fun aceptarBillete(
             ,contentScale = ContentScale.Crop,
                 modifier = Modifier.clip(RoundedCornerShape(16.dp)))
             Spacer(modifier = Modifier.size(15.dp))
-            CrearBilleteButton(rutasViewModel, id, ruta)
+            CrearBilleteButton(rutasViewModel, id, ruta,billeteView)
         }
 
 
@@ -107,7 +109,7 @@ fun aceptarBillete(
 
 }
 @Composable
-fun CrearBilleteButton(viewModel: RutasViewModel, id: Long?, rutaId: Rutas?) {
+fun CrearBilleteButton(viewModel: RutasViewModel, id: Long?, rutaId: Rutas?,billeteView: BilleteViewModel) {
     val randomAsiento = (1..100).random()
 
     Button(onClick = {
@@ -120,6 +122,7 @@ fun CrearBilleteButton(viewModel: RutasViewModel, id: Long?, rutaId: Rutas?) {
             )
 
             viewModel.guardarBillete(id,billete)
+            billeteView.billeteEscogido = billete
 
         } else {
             Log.e("ERROR", "ID del pasajero es nulo")

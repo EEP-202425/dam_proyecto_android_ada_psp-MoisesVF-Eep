@@ -17,6 +17,7 @@ import java.io.IOException
 
 class RutasViewModel: ViewModel() {
 //-------------------------------------------------------------------------------------------------
+
     var rutaSeleccionada by mutableStateOf<Rutas?>(null)
     private val _rutas = mutableStateOf<List<Rutas>>(emptyList())
     val rutas: State<List<Rutas>> get() = _rutas
@@ -127,6 +128,7 @@ class RutasViewModel: ViewModel() {
                     val guardado = response.body()
                     if (guardado != null) {
                         billeteGuardado.value = guardado
+
                         Log.d("BilleteGuardado", "Billete guardado exitosamente: $guardado")
                     } else {
                         Log.e("ERROR", "El cuerpo de la respuesta es nulo")

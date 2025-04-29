@@ -13,6 +13,7 @@ import okhttp3.MediaType.Companion.toMediaType
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -45,6 +46,12 @@ suspend fun crearBillete(@Path("pasajeroId") id: Long?, @Body billete: Billete):
 
 @POST("pasajero/id")
 suspend fun obtenerId(@Body pasajero: Pasajero?): Response<Long>
+
+@DELETE("billete/{id}")
+suspend fun borrarBillete(@Path("id") id: Long?): Response<String>
+
+@GET("billete/{id}")
+suspend fun obtenerIdBillete(@Path("id")id:Long?): Response<Billete>
 }
 
 object RutasApi{

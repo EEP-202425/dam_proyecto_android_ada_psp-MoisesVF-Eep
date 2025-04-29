@@ -1,5 +1,6 @@
 package com.proyecto.Clases
 
+import androidx.compose.runtime.Composable
 import kotlinx.serialization.Serializable
 
 
@@ -11,10 +12,14 @@ data class Billete(
 
 
 )
+@Composable
+fun getId(billete: Billete?): Long? {
 
-
-
-{
-
-
+    return billete?.id
 }
+
+
+
+
+
+

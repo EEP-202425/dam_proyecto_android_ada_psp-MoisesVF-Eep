@@ -83,7 +83,8 @@ fun menuInicio(
                     fontFamily = deliusFont,
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Center,
-                    modifier = Modifier.padding(5.dp).background(Blancofondo).clickable(onClick = {})
+                    modifier = Modifier.padding(5.dp).clip(RoundedCornerShape(12.dp)).background(Blancofondo).
+                    clickable(onClick = {navigationController.navigate(Routes.Pantalla4.misRutas)})
                     )
 
                 Image(
@@ -229,7 +230,7 @@ fun Lugares (rutasViewModel: RutasViewModel, navigationController: NavHostContro
                     modifier = Modifier
                         .clickable(onClick = {
                             rutasViewModel.rutaSeleccionada = ruta
-                            navigationController.navigate("billetes")})
+                            navigationController.navigate(Routes.Pantalla3.misRutas)})
                         .fillMaxWidth()
                         .height(45.dp)
                         .clip(RoundedCornerShape(12.dp))

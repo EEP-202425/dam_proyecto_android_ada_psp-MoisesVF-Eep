@@ -2,6 +2,7 @@ package com.proyecto.proyecto.controllers;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -49,6 +50,16 @@ public class BilleteController {
                                                 @RequestBody Billete billete) {
         Billete nuevo = billeteService.crearBilleteParaPasajero(pasajeroId, billete);
         return ResponseEntity.ok(nuevo);
+    }
+    
+    @GetMapping(path = "/{id}")
+    public ResponseEntity<Billete> getBilleteId(@PathVariable Long id){
+    	Optional<Billete>billeteId = billeteService.getById(id);
+    	if(billeteId.isPresent()) {
+    		return ResponseEntity.ok(billeteId.get());
+    	}else {
+    		return ResponseEntity.notFound().build();
+    	}
     }
 
 }
