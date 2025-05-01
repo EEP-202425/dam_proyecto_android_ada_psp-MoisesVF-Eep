@@ -53,8 +53,8 @@ public class BilleteController {
     }
     
     @GetMapping(path = "/{id}")
-    public ResponseEntity<Long> getBilleteId(@PathVariable Long id){
-    	Optional<Long>billeteId = billeteService.getIdBillete(id);
+    public ResponseEntity<Billete> getBilleteId(@PathVariable Long id){
+    	Optional<Billete>billeteId = billeteService.getById(id);
     	if(billeteId.isPresent()) {
     		return ResponseEntity.ok(billeteId.get());
     	}else {
