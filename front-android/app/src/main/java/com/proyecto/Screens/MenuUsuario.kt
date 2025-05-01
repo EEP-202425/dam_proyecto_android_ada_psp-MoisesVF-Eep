@@ -13,11 +13,17 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -25,7 +31,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -34,7 +42,7 @@ import com.proyecto.Api.BilleteViewModel
 import com.proyecto.Api.RutasViewModel
 import com.proyecto.Api.pasajerosViewModel
 import com.proyecto.Clases.Billete
-import com.proyecto.Clases.getId
+import com.proyecto.Clases.Pasajero
 import com.proyecto.R
 import com.proyecto.navegacion.Routes
 import com.proyecto.ui.theme.Blancofondo
@@ -53,9 +61,13 @@ fun menuUusario(
 
 
 ) {
+    var cambio by remember { mutableStateOf(false) }
+    var modificado by remember { mutableStateOf(false) }
     val persona = pasajerosViewModel.personaSeleccionada
     val billete = billeteViewModel.billeteEscogido
     val idBilletes : Billete? = rutasViewModel.billeteGuardado.value
+
+
     Column(modifier = Modifier.background(color = IndianRed).fillMaxSize().padding(25.dp)) {
         Spacer(modifier = Modifier.size(15.dp))
         Box(contentAlignment = Alignment.Center,modifier = Modifier.weight(1f).fillMaxSize().clip(RoundedCornerShape(12.dp)).background(Blancofondo)) {
@@ -70,15 +82,7 @@ fun menuUusario(
 
             )
 
-                Text(
-                    "Usuario: ${persona?.nombre}\n" +
-                            "Apellido: ${persona?.apellido}\n" +
-                            "mail: ${persona?.email}\n" +
-                            "Telefono: ${persona?.telefono}",
-                    textAlign = TextAlign.Center,
-                    fontWeight = FontWeight.ExtraBold,
-                    fontSize = 20.sp
-                )
+               modificacionPasajero(modificado,persona,rutasViewModel,pasajerosViewModel)
 
 
         }
@@ -95,7 +99,8 @@ fun menuUusario(
                     textAlign = TextAlign.Center
                 )}
 
-            Button(onClick = {},colors = ButtonDefaults.buttonColors(RojoProfundo),
+            Button(onClick = {
+                modificado=true},colors = ButtonDefaults.buttonColors(RojoProfundo),
                 shape = RoundedCornerShape(10.dp) ) {
                 Text(
                     text = "Modificar",
@@ -107,6 +112,7 @@ fun menuUusario(
 
                Button(
                     onClick = {billeteViewModel.deletearBillete(idBilletes?.id)
+                        cambio = true
                               }
                     , colors = ButtonDefaults.buttonColors(RojoFondo),
                     shape = RoundedCornerShape(10.dp))
@@ -131,18 +137,8 @@ fun menuUusario(
                     .alpha(0.2f)
 
             )
-            Text(
 
-                "Billete:\n" +
-                        "Origen: ${billete?.ruta?.origen}\n" +
-                        "Llegada: ${billete?.ruta?.llegada}\n" +
-                        "${billete?.ruta?.trenes}\n" +
-                        "asiento: ${billete?.asiento}",
-                textAlign = TextAlign.Center,
-                fontWeight = FontWeight.ExtraBold,
-                fontSize = 20.sp
-            )
-
+                cambioDeMensaje(cambio,billete)
 
         }
 
@@ -155,14 +151,123 @@ fun menuUusario(
 
 }
 @Composable
-fun cambioDeMensaje(noBorrado: Boolean){
-    if(noBorrado){
+fun cambioDeMensaje(noBorrado: Boolean, billete: Billete?,){
+    if(noBorrado==false){
+        Text(
+
+            "Billete:\n" +
+                    "Origen: ${billete?.ruta?.origen}\n" +
+                    "Llegada: ${billete?.ruta?.llegada}\n" +
+                    "${billete?.ruta?.trenes}\n" +
+                    "asiento: ${billete?.asiento}",
+            textAlign = TextAlign.Center,
+            fontWeight = FontWeight.ExtraBold,
+            fontSize = 20.sp
+        )
+
+    } else {
         Text(
             "El billete fue borrado",
             textAlign = TextAlign.Center,
             fontWeight = FontWeight.ExtraBold,
-            fontSize = 20.sp,
-            modifier = Modifier.fillMaxSize()
+            fontSize = 20.sp
         )
     }
+}
+
+@Composable
+fun modificacionPasajero(
+    cambiado: Boolean,
+    persona: Pasajero?,
+    rutasViewModel: RutasViewModel,
+    pasajerosViewModel: pasajerosViewModel,
+
+    ){
+    if(cambiado==false) {
+        Text(
+            "Usuario: ${persona?.nombre}\n" +
+                    "Apellido: ${persona?.apellido}\n" +
+                    "mail: ${persona?.email}\n" +
+                    "Telefono: ${persona?.telefono}",
+            textAlign = TextAlign.Center,
+            fontWeight = FontWeight.ExtraBold,
+            fontSize = 20.sp
+        )
+    }else{
+        var modificacionFinal by remember { mutableStateOf(false) }
+        var nuevoName by remember { mutableStateOf("") }
+        var nuevoSurNa by remember { mutableStateOf("") }
+        var nuevoMail by remember { mutableStateOf("") }
+        var nuevoTelf by remember { mutableStateOf("") }
+        Column() {
+            nuevoName =  cuadrNombre(modifier = Modifier.fillMaxWidth())
+            nuevoSurNa = cuadrApellido(modifier = Modifier.fillMaxWidth())
+            nuevoMail = cuadrEmail(modifier = Modifier.fillMaxWidth())
+            nuevoTelf = cuadrTelf(modifier = Modifier.fillMaxWidth())
+
+            val usuario = Pasajero(
+                nombre = nuevoName,
+                apellido = nuevoSurNa,
+                email = nuevoMail,
+                telefono = nuevoTelf
+            )
+
+            rutasViewModel.guardarPasajero(usuario)
+            pasajerosViewModel.personaSeleccionada = usuario
+            modificacionFinal=true
+          if(modificacionFinal){
+              Text(
+                  "Usuario: ${persona?.nombre}\n" +
+                          "Apellido: ${persona?.apellido}\n" +
+                          "mail: ${persona?.email}\n" +
+                          "Telefono: ${persona?.telefono}",
+                  textAlign = TextAlign.Center,
+                  fontWeight = FontWeight.ExtraBold,
+                  fontSize = 20.sp)
+
+          }
+        }
+
+
+    }
+
+}
+
+@Composable
+fun cuadrNombre(modifier: Modifier): String {
+    var nombre:String by rememberSaveable { mutableStateOf("") }
+
+    TextField(nombre, onValueChange = {nombre = it}, maxLines = 1,label = { Text(stringResource(id= R.string.label_name)) },modifier= Modifier.alpha(0.8f), shape = RoundedCornerShape(10.dp))
+    return nombre ;
+
+}
+
+@Composable
+fun cuadrApellido(modifier: Modifier): String {
+    var ape:String by rememberSaveable { mutableStateOf("") }
+    TextField(ape, onValueChange = {ape = it}, maxLines = 1,label = { Text(stringResource(id= R.string.label_Ape)) },modifier= Modifier.alpha(0.8f), shape = RoundedCornerShape(10.dp))
+    return ape;
+}
+
+@Composable
+fun cuadrEmail(modifier: Modifier): String {
+    var mail:String by rememberSaveable { mutableStateOf("") }
+    TextField(mail, onValueChange = {mail = it}, maxLines = 1,label = { Text(stringResource(id= R.string.label_mail)) },modifier= Modifier.alpha(0.8f), shape = RoundedCornerShape(10.dp))
+    return mail;
+
+}
+
+@Composable
+fun cuadrTelf(modifier: Modifier): String {
+    var tel:String by rememberSaveable{ mutableStateOf("") }
+    TextField(tel, onValueChange = {numero ->
+        if(numero.length <= 9){
+            tel=numero }
+    }
+        , maxLines = 1,label = { Text(stringResource(id= R.string.label_telf)) },
+        keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),modifier= Modifier.alpha(0.8f), shape = RoundedCornerShape(10.dp)
+    )
+
+    return tel;
+
 }

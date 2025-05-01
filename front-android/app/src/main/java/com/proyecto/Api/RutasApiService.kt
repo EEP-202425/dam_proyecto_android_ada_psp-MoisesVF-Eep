@@ -17,6 +17,7 @@ import retrofit2.http.DELETE
 
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Path
 
 private const val URLBASE = "http://10.0.2.2:4000/"
@@ -52,6 +53,9 @@ suspend fun borrarBillete(@Path("id") id: Long?): Response<String>
 
 @GET("billete/{id}")
 suspend fun obtenerIdBillete(@Path("id")id:Long?): Response<Billete>
+
+@PUT("pasajero/{id}")
+suspend fun  actualizarPasajero(@Path("id")id: Long?,@Body pasajero: Pasajero): Response<Pasajero>
 }
 
 object RutasApi{
