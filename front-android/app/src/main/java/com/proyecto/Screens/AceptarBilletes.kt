@@ -1,6 +1,8 @@
 package com.proyecto.Screens
 
 import android.util.Log
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 
 import androidx.compose.foundation.background
@@ -21,6 +23,12 @@ import androidx.compose.material3.ButtonDefaults
 
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -44,6 +52,8 @@ import com.proyecto.navegacion.Routes
 import com.proyecto.ui.theme.IndianRed
 import com.proyecto.ui.theme.RojoProfundo
 import com.proyecto.ui.theme.rosaPalo
+import kotlinx.coroutines.delay
+
 
 @Composable
 fun aceptarBillete(
@@ -94,8 +104,7 @@ fun aceptarBillete(
                 }
             }
             Spacer(modifier = Modifier.size(15.dp))
-            Image(painter = painterResource(id = R.drawable.keyboard_double_arrow_down_24dp_000000_fill0_wght400_grad0_opsz24),
-                contentDescription = "flecha", modifier = Modifier.size(50.dp))
+            animacion()
             Image(painter = painterResource(id = R.drawable.descargar_icono_de_billete_de_tren_con_sombra_gratis),contentDescription = "Ícono de billete de tren"
             ,contentScale = ContentScale.Crop,
                 modifier = Modifier.clip(RoundedCornerShape(16.dp)))
@@ -109,10 +118,27 @@ fun aceptarBillete(
 
 }
 @Composable
+fun animacion(){
+    var smallSize by rememberSaveable { mutableStateOf(true) }
+    val size by animateDpAsState(targetValue=if(smallSize)50.dp else 100.dp,
+    animationSpec = tween(durationMillis = 1000))
+    LaunchedEffect(Unit) {
+        while (true) {
+            delay(1500)
+            smallSize = !smallSize
+        }
+    }
+    Image(painter = painterResource(id = R.drawable.keyboard_double_arrow_down_24dp_000000_fill0_wght400_grad0_opsz24),
+        contentDescription = "flecha", modifier = Modifier.size(size))
+
+}
+@Composable
 fun CrearBilleteButton(viewModel: RutasViewModel, id: Long?, rutaId: Rutas?,billeteView: BilleteViewModel) {
     val randomAsiento = (1..100).random()
-
+    var texto by rememberSaveable { mutableStateOf(true) }
+    val palabra = if(texto)"Crear Billete" else "Billete creado"
     Button(onClick = {
+
         if (id != null && rutaId != null) {
 
             Log.e("${id}","")
@@ -123,13 +149,14 @@ fun CrearBilleteButton(viewModel: RutasViewModel, id: Long?, rutaId: Rutas?,bill
 
             viewModel.guardarBillete(id,billete)
             billeteView.billeteEscogido = billete
+            texto = false
 
         } else {
             Log.e("ERROR", "ID del pasajero es nulo")
         }
     },colors = ButtonDefaults.buttonColors(RojoProfundo),
         shape = RoundedCornerShape(10.dp)) {
-        Text(text = "Crear Billete")
+        Text(text = palabra)
 
     }
 }

@@ -2,6 +2,7 @@ package com.proyecto.Screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -43,6 +44,7 @@ import com.proyecto.Api.RutasViewModel
 import com.proyecto.Api.pasajerosViewModel
 import com.proyecto.Clases.Billete
 import com.proyecto.Clases.Pasajero
+import com.proyecto.Clases.Rutas
 import com.proyecto.R
 import com.proyecto.navegacion.Routes
 import com.proyecto.ui.theme.Blancofondo
@@ -82,7 +84,7 @@ fun menuUusario(
 
             )
 
-               modificacionPasajero(modificado,persona,rutasViewModel,pasajerosViewModel)
+               modificacionPasajero(modificado,persona,rutasViewModel,pasajerosViewModel,navigationController)
 
 
         }
@@ -113,6 +115,7 @@ fun menuUusario(
                Button(
                     onClick = {billeteViewModel.deletearBillete(idBilletes?.id)
                         cambio = true
+
                               }
                     , colors = ButtonDefaults.buttonColors(RojoFondo),
                     shape = RoundedCornerShape(10.dp))
@@ -139,6 +142,7 @@ fun menuUusario(
             )
 
                 cambioDeMensaje(cambio,billete)
+
 
         }
 
@@ -181,6 +185,7 @@ fun modificacionPasajero(
     persona: Pasajero?,
     rutasViewModel: RutasViewModel,
     pasajerosViewModel: pasajerosViewModel,
+    navigationController: NavHostController
 
     ){
     if(cambiado==false) {
@@ -212,8 +217,7 @@ fun modificacionPasajero(
                 telefono = nuevoTelf
             )
 
-            rutasViewModel.guardarPasajero(usuario)
-            pasajerosViewModel.personaSeleccionada = usuario
+
             modificacionFinal=true
           if(modificacionFinal){
               Text(
@@ -225,11 +229,22 @@ fun modificacionPasajero(
                   fontWeight = FontWeight.ExtraBold,
                   fontSize = 20.sp)
 
+              Text("aceptar", fontWeight = FontWeight.Bold ,modifier = Modifier.clickable{
+                  rutasViewModel.guardarPasajero(usuario)
+                  pasajerosViewModel.personaSeleccionada = usuario
+                  navigationController.navigate(Routes.Pantalla2.misRutas)
+              }
+                  .background(IndianRed)
+                  .padding(5.dp))
+
+
           }
         }
 
 
     }
+
+
 
 }
 
