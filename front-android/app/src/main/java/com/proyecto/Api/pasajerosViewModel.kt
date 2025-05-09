@@ -4,14 +4,8 @@ import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.proyecto.Clases.Billete
 import com.proyecto.Clases.Pasajero
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import java.io.IOException
 
 class pasajerosViewModel: ViewModel(){
@@ -19,9 +13,9 @@ class pasajerosViewModel: ViewModel(){
     var personaSeleccionada by mutableStateOf<Pasajero?>(null)
     var pasajeroNuevo by mutableStateOf<Pasajero?>(null)
 
-    suspend fun modificarPasajero(id: Long, pasajero: Pasajero): Pasajero? {
+   suspend fun modificarPasajero(id: Long?, pasajero: Pasajero): Pasajero? {
         return try {
-            val response = RutasApi.retrofitService.actualizarPasajero(id, pasajero)
+            val response = RutasApi.retrofitService.actualizarPasajero(id = id, pasajero = pasajero)
             if (response.isSuccessful) {
                 val guardado = response.body()
                 pasajeroNuevo = guardado
@@ -37,6 +31,7 @@ class pasajerosViewModel: ViewModel(){
             Log.e("ERROR", "Error general: ${e.message}")
             null
         }
+        return pasajeroNuevo
     }
 
 

@@ -96,7 +96,7 @@ fun aceptarBillete(
                         "Telefono: ${persona?.telefono}"
                     , textAlign = TextAlign.Center, fontWeight = FontWeight.ExtraBold, fontSize = 20.sp)
 
-                Text("Origen: ${ruta?.id}\n" +
+                Text("Origen: ${ruta?.origen}\n" +
                         "Destino: ${ruta?.llegada}\n" +
                         "${ruta?.cogerPrimero()}\n"
 

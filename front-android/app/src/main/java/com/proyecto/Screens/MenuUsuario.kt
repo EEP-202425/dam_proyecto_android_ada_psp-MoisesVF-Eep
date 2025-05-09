@@ -20,9 +20,11 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -44,7 +46,6 @@ import com.proyecto.Api.RutasViewModel
 import com.proyecto.Api.pasajerosViewModel
 import com.proyecto.Clases.Billete
 import com.proyecto.Clases.Pasajero
-import com.proyecto.Clases.Rutas
 import com.proyecto.R
 import com.proyecto.navegacion.Routes
 import com.proyecto.ui.theme.Blancofondo
@@ -52,6 +53,7 @@ import com.proyecto.ui.theme.IndianRed
 import com.proyecto.ui.theme.RojoFondo
 import com.proyecto.ui.theme.RojoProfundo
 import com.proyecto.ui.theme.rosaPalo
+import kotlinx.coroutines.launch
 
 @Composable
 fun menuUusario(
@@ -162,7 +164,7 @@ fun cambioDeMensaje(noBorrado: Boolean, billete: Billete?,){
             "Billete:\n" +
                     "Origen: ${billete?.ruta?.origen}\n" +
                     "Llegada: ${billete?.ruta?.llegada}\n" +
-                    "${billete?.ruta?.trenes}\n" +
+                    "${billete?.ruta?.trenes?.get(0)}\n" +
                     "asiento: ${billete?.asiento}",
             textAlign = TextAlign.Center,
             fontWeight = FontWeight.ExtraBold,
@@ -205,6 +207,7 @@ fun modificacionPasajero(
         var nuevoMail by remember { mutableStateOf("") }
         var nuevoTelf by remember { mutableStateOf("") }
         Column() {
+            val coroutineScope = rememberCoroutineScope()
             nuevoName =  cuadrNombre(modifier = Modifier.fillMaxWidth())
             nuevoSurNa = cuadrApellido(modifier = Modifier.fillMaxWidth())
             nuevoMail = cuadrEmail(modifier = Modifier.fillMaxWidth())
@@ -230,9 +233,14 @@ fun modificacionPasajero(
                   fontSize = 20.sp)
 
               Text("aceptar", fontWeight = FontWeight.Bold ,modifier = Modifier.clickable{
-                  rutasViewModel.guardarPasajero(usuario)
-                  pasajerosViewModel.personaSeleccionada = usuario
-                  navigationController.navigate(Routes.Pantalla2.misRutas)
+                  coroutineScope.launch {
+                      val id: Long? = rutasViewModel.obtnerIdPasajero(persona)
+
+                      val personaNueva = pasajerosViewModel.modificarPasajero(id,usuario)
+                      pasajerosViewModel.personaSeleccionada = personaNueva
+                      navigationController.navigate(Routes.Pantalla2.misRutas)
+                  }
+
               }
                   .background(IndianRed)
                   .padding(5.dp))
@@ -247,6 +255,7 @@ fun modificacionPasajero(
 
 
 }
+
 
 @Composable
 fun cuadrNombre(modifier: Modifier): String {
