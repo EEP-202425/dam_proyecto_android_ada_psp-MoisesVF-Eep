@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Bienvenido a OdysseyPass</string>
+    <string name="label_name">Nombre</string>
+    <string name="label_Ape">Apellido</string>
+    <string name="label_mail">Email</string>
+    <string name="label_telf">Telefono</string>
+    <string name="entrar">Entrar</string>
+
+</resources>
