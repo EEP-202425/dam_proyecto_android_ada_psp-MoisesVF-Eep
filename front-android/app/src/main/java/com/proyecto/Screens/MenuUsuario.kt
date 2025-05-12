@@ -233,14 +233,9 @@ fun modificacionPasajero(
                   fontSize = 20.sp)
 
               Text("aceptar", fontWeight = FontWeight.Bold ,modifier = Modifier.clickable{
-                  coroutineScope.launch {
-                      val id: Long? = rutasViewModel.obtnerIdPasajero(persona)
-
-                      val personaNueva = pasajerosViewModel.modificarPasajero(id,usuario)
-                      pasajerosViewModel.personaSeleccionada = personaNueva
-                      navigationController.navigate(Routes.Pantalla2.misRutas)
-                  }
-
+                  rutasViewModel.guardarPasajero(usuario)
+                  pasajerosViewModel.personaSeleccionada = usuario
+                  navigationController.navigate(Routes.Pantalla2.misRutas)
               }
                   .background(IndianRed)
                   .padding(5.dp))
